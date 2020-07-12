@@ -54,7 +54,6 @@ class ShowAPI extends RESTDataSource {
 
 
     async getShowByPremiereDate({ premiere }) {
-        console.log(premiere);
         const response = await this.get('shows');
         return Array.isArray(response)
             ? response.map(show => this.queryByPremiereDate(show, premiere)) // returns nulls as well should probably use filter or reduce but not sure how to
@@ -66,6 +65,25 @@ class ShowAPI extends RESTDataSource {
         var D2 = Date.parse(premiere);
 
         if (D1 == D2) {
+            return this.showReducer(show);
+        }
+    }
+
+
+    async getShowByStatus({ status }) {
+        const response = await this.get('shows');
+        return Array.isArray(response)
+            ? response.map(show => this.queryByStatus(show, status)) // returns nulls as well should probably use filter or reduce but not sure how to
+            : [];
+    }
+
+    queryByStatus(show, status) {
+        console.log(show.status);
+
+        if (show.status == status) {
+            console.log(status);
+
+            // console.log()
             return this.showReducer(show);
         }
     }
