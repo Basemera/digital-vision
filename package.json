@@ -1,0 +1,17 @@
+{
+  "name": "digital-vision",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Phiona Basemera",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-client": "^2.6.10",
+    "apollo-datasource-rest": "^0.9.3",
+    "apollo-server": "^2.15.1",
+    "graphql": "^15.3.0"
+  }
+}
