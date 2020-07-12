@@ -78,18 +78,23 @@ class ShowAPI extends RESTDataSource {
     }
 
     queryByStatus(show, status) {
-        console.log(show.status);
+        // console.log(show.status);
 
         if (show.status == status) {
-            console.log(status);
+            // console.log(status);
 
             // console.log()
             return this.showReducer(show);
         }
     }
 
+    async getShowUsingMultipleFilters(...args) { // to be implemented
+
+    }
+
     //implement show reducer
     showReducer(show){
+        console.log(show.image.medium);
         return {
             id: show.id || 0,
             url: show.url,
@@ -104,7 +109,11 @@ class ShowAPI extends RESTDataSource {
                 }
             },
             // show.rating,
-            image: show.image,
+            images: {
+                medium: show.image.medium,
+                original: show.image.original
+            },
+            // show.image,
             summary: show.summary,
         }
     }

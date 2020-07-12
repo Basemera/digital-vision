@@ -16,7 +16,7 @@ const typeDefs = gql`
         rating: Rating
         dateOfPremier: String
         status: String
-        images:[Image]
+        images:Image
     }
 
     type Rating {
