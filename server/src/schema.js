@@ -80,6 +80,8 @@ const typeDefs = gql`
         show (name: String): [Show]
         showByGenre (genre: String): [Show]
         showByRating (rating: Float): [Show]
+        showByPremiereDate (premiere: String): [Show]
+
     }
 `;
 
