@@ -38,6 +38,20 @@ class ShowAPI extends RESTDataSource {
         }
     }
 
+    async getShowByRating({ rating }) {
+        const response = await this.get('shows');
+        return Array.isArray(response)
+            ? response.map(show => this.queryByRating(show, rating)) // returns nulls as well should probably use filter or reduce but not sure how to
+            : [];
+    }
+
+    queryByRating(show, rating) {
+        if (show.rating.average == rating) {
+            // console.log()
+            return this.showReducer(show);
+        }
+    }
+
     //implement show reducer
     showReducer(show){
         return {
@@ -48,7 +62,12 @@ class ShowAPI extends RESTDataSource {
             genre: {name: show.genres},
             status: show.status,
             premiered: show.premiered,
-            rating: show.rating,
+            rating: {
+                average: {
+                    average: show.rating.average
+                }
+            },
+            // show.rating,
             image: show.image,
             summary: show.summary,
         }

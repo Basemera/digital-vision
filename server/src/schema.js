@@ -24,7 +24,7 @@ const typeDefs = gql`
     }
 
     type Average {
-        average: Int
+        average: Float
     }
 
     type Season {
@@ -79,6 +79,7 @@ const typeDefs = gql`
         shows: [Show]!
         show (name: String): [Show]
         showByGenre (genre: String): [Show]
+        showByRating (rating: Float): [Show]
     }
 `;
 
