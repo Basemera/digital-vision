@@ -12,7 +12,7 @@ const typeDefs = gql`
         id:ID!
         name: String
         url: String
-        genre: [String]
+        genre: Genre
         rating: Rating
         dateOfPremier: String
         status: String
@@ -70,9 +70,15 @@ const typeDefs = gql`
         character: Character
     }
 
+    type Genre {
+        id: ID!
+        name: [String]
+    }
+
     type Query{
         shows: [Show]!
         show (name: String): [Show]
+        showByGenre (genre: String): [Show]
     }
 `;
 
