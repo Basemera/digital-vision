@@ -9,13 +9,20 @@ class ShowAPI extends RESTDataSource {
     //get all shows
     async getAllShows() {
         const response = await this.get('shows');
-        return Array.isArray(response.type)
-            ? response.map(show => {
-                this.showReducer(show)
-                console.log(show.name)
-            })
+
+        return Array.isArray(response)
+            ? response.map(show => this.showReducer(show))
             : [];
     }
+
+    async getShowByName({ name }) {
+        const response = await this.get(`search/shows`, { q: name });
+        return Array.isArray(response)
+            ? response.map(show => this.showReducer(show.show))
+            : [];
+    }
+
+    
 
     //implement show reducer
     showReducer(show){
