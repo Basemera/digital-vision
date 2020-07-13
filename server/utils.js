@@ -34,39 +34,33 @@ module.exports.createStore = () => {
         password: Sequelize.STRING,
       });
 
-    // const movies = db.define('movies', {
-    //     id: {
-    //         type: SQL.INTEGER,
-    //         primaryKey: true,
-    //         autoIncrement: true,
-    //     },
-    //     name: SQL.STRING,
-    //     url: SQL.STRING,
-    //     image: {
-    //         type: SQL.ARRAY,
-    //     },
-    //     genre: {
-    //         type: SQL.INTEGER,
-    //     },
-    //     rating: SQL.INTEGER,
-    //     dateOfPremier: SQL.DATE,
-    //     status: {
-    //         type: SQL.INTEGER
-    //     },
-    //     comments: {
-    //         type: SQL.INTEGER
-    //     },
-    //     favourite: {
-    //         type: SQL.BOOLEAN
-    //     },
-    //     watched: {
-    //         type: SQL.BOOLEAN
-    //     },
-    //     user: {
-    //         type: SQL.INTEGER
-    //     }
-    // },  
-    // );
+    const shows = db.define('shows', {
+        id: {
+            type: SQL.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
+        },
+        name: SQL.STRING,
+        showId: SQL.INTEGER,
+        // url: SQL.STRING,
+        // dateOfPremier: SQL.DATE,
+        // status: {
+        //     type: SQL.INTEGER
+        // },
+        comments: {
+            type: SQL.INTEGER
+        },
+        favourite: {
+            type: SQL.BOOLEAN
+        },
+        watched: {
+            type: SQL.BOOLEAN
+        },
+        user: {
+            type: SQL.INTEGER
+        }
+    },  
+    );
 
     // const genre = db.define('genre', {
     //     id:  {
@@ -94,5 +88,5 @@ module.exports.createStore = () => {
         }
     );
 
-    return { db, users, };
+    return { db, users, shows, };
 }

@@ -21,6 +21,8 @@ module.exports = {
             }
             return [];
         },
-        register: async (_, { username, password }, { dataSources }) => dataSources.userAPI.registerUser({ username, password })
+        register: async (_, { username, password }, { dataSources }) => dataSources.userAPI.registerUser({ username, password }),
+        addShowToSchedule: async (_,  showIds, { dataSources }) => dataSources.userAPI.addShowToSchedule( showIds ),
+
     }
 }

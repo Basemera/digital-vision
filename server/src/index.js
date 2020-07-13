@@ -9,21 +9,24 @@ const UserAPI = require('./datasources/user');
 
 const store = createStore();
 
+const dataSources = () => ({
+    showAPI: new ShowAPI(),
+    userAPI: new UserAPI({ store })
+  });
+
+const context =  async ({ req }) => {
+    const auth = req.headers && req.headers.authorization || '';
+    // const password = req.body.password || '';
+    const username = Buffer.from(auth, 'base64').toString('ascii');
+    const user = await store.users.findOne({ where: { username: username } })
+    return { user };
+}
+
 const server = new ApolloServer({ 
-    context: async ({ req }) => {
-        const auth = req.headers && req.headers.authorization || '';
-        const password = req.body.password || '';
-        const username = Buffer.from(auth, 'base64').toString('ascii');
-        const user = await store.users.findOrCreate({ where: { username: username, password: password } })
-        // const user = UserAPI.validateUser({ username, password })
-        return user;
-    },
     typeDefs,
+    context,
     resolvers,
-    dataSources: () => ({
-        showAPI: new ShowAPI(),
-        userAPI: new UserAPI({ store })
-    }) 
+    dataSources,
 });
 
 server.listen().then(({ url }) => {

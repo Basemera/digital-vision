@@ -17,8 +17,21 @@ const typeDefs = gql`
         dateOfPremier: String
         status: String
         images:Image
+        site: String
     }
 
+    type ScheduledShow {
+        id:ID!
+        name: String
+        url: String
+        # dateOfPremier: String
+        # schedule: Schedule
+    }
+
+    type Schedule {
+        time: String
+        days: [String]
+    }
     type Rating {
         average: Average
     }
@@ -89,9 +102,15 @@ const typeDefs = gql`
         token: String
     }
 
+    input ShowInputIds {
+        name: String
+        showId: Int
+    }
+
     type Mutation{
         register (username: String, password: String): User,
         login (username: String, password: String): LoginObject,
+        addShowToSchedule (showIds : [ShowInputIds] ): [ScheduledShow]
     }
 `;
 

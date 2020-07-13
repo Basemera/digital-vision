@@ -52,6 +52,28 @@ async login( { username, password }) {
      return user;
 }
 
+async addShowToSchedule( showIds ) {
+    const userId = this.context.user.id;
+    if (!userId) return;
+
+    let results = [];
+
+    for (const showId of showIds.showIds) {
+        const res = await this.addShow({ showId });
+        if (res) results.push(res);
+    }
+    return results;
+
+}
+
+async addShow({ showId }) {
+    const userId = this.context.user.id;
+    const res = await this.store.shows.findOrCreate({
+      where: { user: userId, showId: showId.showId, name: showId.name },
+    });
+    return res && res.length ? res[0].get() : false;
+  }
+
 }
 
 
