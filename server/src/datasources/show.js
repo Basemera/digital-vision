@@ -24,69 +24,72 @@ class ShowAPI extends RESTDataSource {
     }
 
     async getShowByGenre({ genre }) {
-        const response = await this.get('shows');
-        return Array.isArray(response)
-            ? response.filter(show => this.queryByGenre(show, genre)) // this returns the response with the genre null
-            
-            // ? response.map (show => this.queryByGenre(show, genre)) // this returns genre but also returns those that are null
-            : [];
-    }
-
-    queryByGenre(show, genre) {
-        if (show.genres.includes(genre)) {
-            return this.showReducer(show);
+        let resultSet = []
+        const shows =  await this.get('shows')
+        if(Array.isArray(shows)){
+            shows.map(show => show.genres.filter(item => {
+                console.log(item)
+                if(item == genre){
+                    resultSet.push(this.showReducer(show))
+                }
+            }))
+            return resultSet
+        }
+        else {
+            return resultSet
         }
     }
 
     async getShowByRating({ rating }) {
-        const response = await this.get('shows');
-        return Array.isArray(response)
-            ? response.map(show => this.queryByRating(show, rating)) // returns nulls as well should probably use filter or reduce but not sure how to
-            : [];
-    }
-
-    queryByRating(show, rating) {
-        if (show.rating.average == rating) {
-            // console.log()
-            return this.showReducer(show);
+        let resultSet = []
+        const shows =  await this.get('shows')
+        if(Array.isArray(shows)){
+            shows.map(show => {
+                if (show.rating.average === rating) {
+                    resultSet.push(this.showReducer(show));
+                }
+            })
+            return resultSet
+        }
+        else {
+            return resultSet
         }
     }
 
 
     async getShowByPremiereDate({ premiere }) {
-        const response = await this.get('shows');
-        return Array.isArray(response)
-            ? response.map(show => this.queryByPremiereDate(show, premiere)) // returns nulls as well should probably use filter or reduce but not sure how to
-            : [];
-    }
-
-    queryByPremiereDate(show, premiere) {
-        var D1 = Date.parse(show.premiered);
-        var D2 = Date.parse(premiere);
-
-        if (D1 == D2) {
-            return this.showReducer(show);
+        let resultSet = []
+        const shows =  await this.get('shows')
+        if(Array.isArray(shows)){
+            shows.map(show => {
+                if (show.premiered === premiere) {
+                    resultSet.push(this.showReducer(show));
+                }
+            })
+            return resultSet
+        }
+        else {
+            return resultSet
         }
     }
 
 
     async getShowByStatus({ status }) {
-        const response = await this.get('shows');
-        return Array.isArray(response)
-            ? response.map(show => this.queryByStatus(show, status)) // returns nulls as well should probably use filter or reduce but not sure how to
-            : [];
-    }
-
-    queryByStatus(show, status) {
-        // console.log(show.status);
-
-        if (show.status == status) {
-            // console.log(status);
-
-            // console.log()
-            return this.showReducer(show);
+        let resultSet = []
+        const shows =  await this.get('shows')
+        if(Array.isArray(shows)){
+            shows.map(show => {
+                if (show.status === status) {
+                    resultSet.push(this.showReducer(show));
+                }
+            })
+            return resultSet
+        }
+        else {
+            return resultSet
         }
     }
+    
 
     async getShowUsingMultipleFilters(...args) { // to be implemented
 
@@ -94,13 +97,12 @@ class ShowAPI extends RESTDataSource {
 
     //implement show reducer
     showReducer(show){
-        console.log(show.image.medium);
         return {
             id: show.id || 0,
             url: show.url,
             name: show.name,
             type: show.type,
-            genre: {name: show.genres},
+            genre: show.genres,
             status: show.status,
             dateOfPremier: show.premiered,
             rating: {
@@ -112,7 +114,7 @@ class ShowAPI extends RESTDataSource {
             images: {
                 medium: show.image.medium,
                 original: show.image.original
-            },
+            } || null,
             // show.image,
             summary: show.summary,
         }

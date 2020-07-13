@@ -12,7 +12,7 @@ const typeDefs = gql`
         id:ID!
         name: String
         url: String
-        genre: Genre
+        genre: [String]
         rating: Rating
         dateOfPremier: String
         status: String
