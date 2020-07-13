@@ -26,9 +26,9 @@ class ShowAPI extends RESTDataSource {
     async getShowByGenre({ genre }) {
         const response = await this.get('shows');
         return Array.isArray(response)
-            // ? response.filter(show => this.queryByGenre(show, genre)) // this returns the response with the genre null
+            ? response.filter(show => this.queryByGenre(show, genre)) // this returns the response with the genre null
             
-            ? response.map (show => this.queryByGenre(show, genre)) // this returns genre but also returns those that are null
+            // ? response.map (show => this.queryByGenre(show, genre)) // this returns genre but also returns those that are null
             : [];
     }
 

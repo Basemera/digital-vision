@@ -1,0 +1,5 @@
+class RegisterUser {
+    // recieve data
+
+    
+}
