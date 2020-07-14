@@ -23,6 +23,10 @@ module.exports = {
         },
         register: async (_, { username, password }, { dataSources }) => dataSources.userAPI.registerUser({ username, password }),
         addShowToSchedule: async (_,  showIds, { dataSources }) => dataSources.userAPI.addShowToSchedule( showIds ),
+        setShowToWatched: async (_,  showIds, { dataSources }) => dataSources.userAPI.setShowToWatched( showIds ),
+        setFavouriteShow: async (_,  showIds, { dataSources }) => dataSources.userAPI.setFavouriteShow( showIds ),
+        postCommentsOnShow: async (_,  { showId, commentText }, { dataSources }) => dataSources.userAPI.postCommentsOnShow( { showId, commentText, } ),
+
 
     }
 }

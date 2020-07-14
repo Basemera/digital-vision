@@ -62,6 +62,17 @@ module.exports.createStore = () => {
     },  
     );
 
+    const comments = db.define('comments', {
+        id: {
+            type: SQL.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
+        },
+        commentor: SQL.INTEGER,
+        show: SQL.INTEGER,
+        comment: SQL.TEXT
+    })
+
     // const genre = db.define('genre', {
     //     id:  {
     //         type: SQL.INTEGER,
@@ -88,5 +99,5 @@ module.exports.createStore = () => {
         }
     );
 
-    return { db, users, shows, };
+    return { db, users, shows, comments, };
 }

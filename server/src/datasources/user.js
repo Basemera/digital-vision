@@ -63,7 +63,6 @@ async addShowToSchedule( showIds ) {
         if (res) results.push(res);
     }
     return results;
-
 }
 
 async addShow({ showId }) {
@@ -74,6 +73,109 @@ async addShow({ showId }) {
     return res && res.length ? res[0].get() : false;
   }
 
+  async setShowToWatched( showIds ) {
+    const userId = this.context.user.id;
+    if (!userId) return;
+    let results =[];
+    for (const showId of showIds.showIds) {
+      const res = await this.addShowToWatched({ showId });
+      if (res) results.push(res);
+  }
+    return results;
+  }
+
+  async addShowToWatched({ showId }) {
+    const userId = this.context.user.id;
+    const res = await this.store.shows.findOne({
+      where: { user: userId, showId: showId.showId}
+    });
+    if (res) {
+      res.watched = true;
+      res.save();
+      return res;
+    } else {
+      return false;
+      // return `show ${ showId.showId } not added to user watch list`
+    }
+  }
+
+  async setFavouriteShow( showIds ) {
+    const userId = this.context.user.id;
+    if (!userId) return;
+    let results = [];
+    for (const showId of showIds.showIds) {
+      const res = await this.favouriteWatchedShow({ showId });
+      if (res) results.push(res);
+  }
+    return results;
+  }
+
+  async favouriteWatchedShow({ showId }) {
+    const userId = this.context.user.id;
+    const res = await this.store.shows.findOne({
+      where: { user: userId, showId: showId.showId}
+    });
+    if (res && res.watched) {
+      res.favourited = true;
+      res.save();
+      return res;
+    } else {
+      return false;
+      // return `show ${ showId.showId } not added to user watch list`
+    }
+  }
+
+  async findShow({ showId }) {
+    // console.log(showId);
+    const userId = this.context.user.id;
+    const res = await this.store.shows.findOrCreate({
+      where: { user: userId, showId: showId, },
+    });
+    // console.log(res[0].get())
+    return res && res.length ? res[0].get() : false;
+  }
+
+  async postCommentsOnShow({ showId, commentText }) {
+      const userId = this.context.user.id;
+      // console.log(commentText);
+
+      if (!userId) return;
+      const show =  await this.findShow({ showId });
+      console.log(commentText);
+
+      if (show.watched) {
+        const comment = await this.addComment({ showId, commentText });
+        if (comment) {
+          const res = this.commentReducer(comment, userId);
+          return res;
+        }
+      }
+      else {
+        const res = this.commentReducer([]);
+        return res;
+      }
+      const res = this.commentReducer([]);
+      return res; 
+     }
+
+  async addComment({ showId, commentText }) {
+    const userId = this.context.user.id;
+    const res = await this.store.comments.findOrCreate({
+      where: { commentor: userId, show: showId, comment: commentText },
+    });
+    console.log(res.length);
+    return res && res.length ? res[0].get() : false;
+  }
+
+  //comment reducer
+  commentReducer(comment, user) {
+    return {
+      text: comment.comment || null,
+      user: user,
+      show: comment.show || null,
+      message: comment && comment.id ? 'Comment added' : 'Comment couldnot be added'
+    }
+  }
 }
 
 

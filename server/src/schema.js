@@ -107,10 +107,29 @@ const typeDefs = gql`
         showId: Int
     }
 
+    input ShowUpdateInputIds {
+        showId: Int
+    }
+
+    type commentType {
+        text: String,
+        show: Int,
+        user: Int,
+        message: String
+    }
+
+    input commentInputType {
+        showId: Int,
+        comment: String
+    }
+
     type Mutation{
         register (username: String, password: String): User,
         login (username: String, password: String): LoginObject,
         addShowToSchedule (showIds : [ShowInputIds] ): [ScheduledShow]
+        setShowToWatched (showIds : [ShowUpdateInputIds] ): [ScheduledShow]
+        setFavouriteShow (showIds : [ShowUpdateInputIds] ): [ScheduledShow]
+        postCommentsOnShow (showId: Int, commentText: String): commentType
     }
 `;
 
