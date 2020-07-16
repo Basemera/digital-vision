@@ -17,7 +17,7 @@ class ShowAPI extends RESTDataSource {
 
     async getShowByName({ name }) {
         const response = await this.get(`search/shows`, { q: name });
-        console.log(response);
+        // console.log(response);
         return Array.isArray(response)
             ? response.map(show => this.showReducer(show.show))
             : [];
@@ -28,7 +28,7 @@ class ShowAPI extends RESTDataSource {
         const shows =  await this.get('shows')
         if(Array.isArray(shows)){
             shows.map(show => show.genres.filter(item => {
-                console.log(item)
+                // console.log(item)
                 if(item == genre){
                     resultSet.push(this.showReducer(show))
                 }
@@ -97,6 +97,7 @@ class ShowAPI extends RESTDataSource {
 
     //implement show reducer
     showReducer(show){
+        console.log(show.image);
         return {
             id: show.id || 0,
             url: show.url,
@@ -112,8 +113,8 @@ class ShowAPI extends RESTDataSource {
             },
             // show.rating,
             images: {
-                medium: show.image.medium,
-                original: show.image.original
+                medium: show.image && show.image.medium ? show.image.medium : null,
+                original: show.image && show.image.original ? show.image.original : null
             } || null,
             // show.image,
             summary: show.summary,

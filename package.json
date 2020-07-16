@@ -13,6 +13,7 @@
     "apollo-client": "^2.6.10",
     "apollo-datasource-rest": "^0.9.3",
     "apollo-server": "^2.15.1",
+    "dotenv": "^8.2.0",
     "graphql": "^15.3.0",
     "graphql-tag": "^2.10.4",
     "react-apollo": "^3.1.5",

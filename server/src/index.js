@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const { ApolloServer } = require('apollo-server');
 const typeDefs = require('./schema');
 
@@ -27,6 +29,12 @@ const server = new ApolloServer({
     context,
     resolvers,
     dataSources,
+    engine: {
+        reportSchema: true,
+        // apiKey: "service:Digital-Vision:xaj1isqKjpatNHeRA_ET8g"
+        apiKey: process.env.ENGINE_API_KEY,
+
+      }
 });
 
 server.listen().then(({ url }) => {
