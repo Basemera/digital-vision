@@ -93,11 +93,8 @@ module.exports.createStore = () => {
     // }
     // );
     // Sequelize.sync();   
-    db.sync(
-        {
-            // force: true
-        }
-    );
+
+    db.sync({force: true}).then(() => {db.close});
 
     return { db, users, shows, comments, };
 }
