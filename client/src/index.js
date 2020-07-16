@@ -1,11 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
-
-import gql from 'graphql-tag';
+import { ApolloProvider } from "@apollo/react-hooks";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App'
 
 const cache = new InMemoryCache();
 const link = new HttpLink({
@@ -17,15 +16,10 @@ const client = new ApolloClient({
   link
 });
 
-client
-  .query({
-    query: gql`
-      query GetAllShows{
-        shows{
-          name
-        }
-      }
-    `
-  })
-  .then(result => console.log(result));
+ReactDOM.render(
+  <ApolloProvider client={ client }>
+    <App/>
+  </ApolloProvider>,
+  document.getElementById("root")
+);
 
