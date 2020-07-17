@@ -5,6 +5,7 @@ import { ApolloProvider } from "@apollo/react-hooks";
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 const cache = new InMemoryCache();
 const link = new HttpLink({

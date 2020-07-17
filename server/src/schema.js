@@ -18,6 +18,7 @@ const typeDefs = gql`
         status: String
         images:Image
         site: String
+        summary: String
     }
 
     type ScheduledShow {

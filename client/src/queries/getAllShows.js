@@ -3,8 +3,11 @@ import gql from "graphql-tag";
 const GET_ALL_SHOWS = gql`
     query {
         shows{
+            id
             name
-            dateOfPremier
+            images{
+                medium
+            }
             summary
         }
     }
