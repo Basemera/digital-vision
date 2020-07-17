@@ -6,7 +6,7 @@ import {
 
 function MovieCard(props) {
     return (
-        <div>
+        <div style={{ marginBottom:"50px"}}>
             <Card style={{ width: '18rem' }}>
                 <Card.Img variant="top" src={props.show.images.medium} />
                 <Card.Body>
@@ -14,7 +14,7 @@ function MovieCard(props) {
                     <Card.Text>
                         {props.show.summary}
                     </Card.Text>
-                    <Button variant="primary">Go somewhere</Button>
+                    <Button variant="primary">View more</Button>
                 </Card.Body>
             </Card>
         </div>

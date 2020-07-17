@@ -8,7 +8,6 @@ const GET_ALL_SHOWS = gql`
             images{
                 medium
             }
-            summary
         }
     }
 `;
