@@ -90,12 +90,7 @@ const typeDefs = gql`
     }
 
     type Query{
-        shows: [Show]!
-        show (name: String): [Show]
-        showByGenre (genre: String): [Show]
-        showByRating (rating: Float): [Show]
-        showByPremiereDate (premiere: String): [Show]
-        showByStatus (status: String): [Show]
+        shows (name: String, genre: String, rating: Float, premiere: String, status: String): [Show]
     }
 
     type LoginObject {

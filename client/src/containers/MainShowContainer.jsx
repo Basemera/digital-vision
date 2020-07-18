@@ -2,6 +2,7 @@ import React, { Fragment, useState } from 'react';
 import { useQuery } from "react-apollo"
 import GET_ALL_SHOWS from "../queries/getAllShows";
 import SEARCH_BY_NAME from "../queries/searchByName";
+import SEARCH_BY_GENRE from "../queries/searchByGenre"
 import ShowGrid from './ShowGrid';
 import {
     Navbar,
@@ -23,11 +24,18 @@ function MainShowContainer() {
         setQuery(query)
     }
 
+    function handleActionSearch() {
+        console.log(`searching for shows by genre`);
+        query = SEARCH_BY_GENRE
+        setVariables({genre:"Comedy"})
+        setQuery(query)
+    }
+
     let [variables, setVariables] = useState()
     let[query, setQuery] = useState(GET_ALL_SHOWS)
     let [searchTerm, setSearchTerm] = useState();
     let { data, loading, error } = useQuery(query, {variables});
-
+    console.log(data)
     return (
 
         <Fragment>
@@ -39,10 +47,14 @@ function MainShowContainer() {
                         <Nav className="mr-auto">
                             <Nav.Link href="#home">Shows</Nav.Link>
                             <Nav.Link href="#link">My Shows</Nav.Link>
-                            <NavDropdown title="Organise" id="basic-nav-dropdown">
-                                <NavDropdown.Item href="#action/3.1">Genre</NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.2">Rating</NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.3">Date of premier</NavDropdown.Item>
+                            <NavDropdown title="Genres" id="basic-nav-dropdown">
+                                <NavDropdown.Item onClick={handleActionSearch} href="#action/3.3">Action</NavDropdown.Item>
+                                <NavDropdown.Item href="#action/3.1">Drama</NavDropdown.Item>
+                                <NavDropdown.Item href="#action/3.2">Comedy</NavDropdown.Item>
+                                <NavDropdown.Item href="#action/3.3">Crime</NavDropdown.Item>
+                                <NavDropdown.Item href="#action/3.3">Childrem</NavDropdown.Item>
+                                <NavDropdown.Item href="#action/3.3">Music</NavDropdown.Item>
+                                <NavDropdown.Item href="#action/3.3">Romance</NavDropdown.Item>
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
                             </NavDropdown>

@@ -2,14 +2,14 @@ import gql from "graphql-tag";
 
 
 const SEARCH_BY_GENRE = gql`
-    query show($genre: String!){
-        show(name: $genre) {
+    query shows($genre: String!){
+        shows(genre: $genre) {
             id
             name
             images{
                 medium
             }
-    }        
+        }        
     }
 `;
 

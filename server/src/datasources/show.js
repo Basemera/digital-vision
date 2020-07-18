@@ -15,7 +15,34 @@ class ShowAPI extends RESTDataSource {
             : [];
     }
 
-    async getShowByName({ name }) {
+    async getShowByParameter({ ...args }){
+        const{ name, genre, rating, premier, status } = args;
+        if(name !== undefined){
+            return await this.getShowByName({name})
+        }
+
+        if(genre !== undefined){
+            return await this.getShowByGenre({ genre })
+        } 
+
+        if(rating !== undefined){
+            return await this.getShowByRating({ rating })
+        }
+
+        if(status !== undefined){
+            return await this.getShowByStatus({ status })
+        }
+
+        if (premier !== undefined){
+            return await this.getShowByPremiereDate({ premiere })
+        }
+
+        if( name === undefined && genre === undefined && rating === undefined && status === undefined && premier === undefined){
+            return await this.getAllShows()
+        }
+    }
+
+    async getShowByName({name}) {
         const response = await this.get(`search/shows`, { q: name });
         // console.log(response);
         return Array.isArray(response)
@@ -23,7 +50,7 @@ class ShowAPI extends RESTDataSource {
             : [];
     }
 
-    async getShowByGenre({ genre }) {
+    async getShowByGenre({genre}) {
         let resultSet = []
         const shows =  await this.get('shows')
         if(Array.isArray(shows)){
@@ -40,7 +67,7 @@ class ShowAPI extends RESTDataSource {
         }
     }
 
-    async getShowByRating({ rating }) {
+    async getShowByRating({rating}) {
         let resultSet = []
         const shows =  await this.get('shows')
         if(Array.isArray(shows)){
@@ -57,7 +84,7 @@ class ShowAPI extends RESTDataSource {
     }
 
 
-    async getShowByPremiereDate({ premiere }) {
+    async getShowByPremiereDate({premiere}) {
         let resultSet = []
         const shows =  await this.get('shows')
         if(Array.isArray(shows)){
@@ -74,7 +101,7 @@ class ShowAPI extends RESTDataSource {
     }
 
 
-    async getShowByStatus({ status }) {
+    async getShowByStatus({status}) {
         let resultSet = []
         const shows =  await this.get('shows')
         if(Array.isArray(shows)){
