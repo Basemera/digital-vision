@@ -2,35 +2,29 @@ import React, { Fragment } from 'react';
 import { useQuery } from "@apollo/react-hooks";
 import GET_ALL_SHOWS from "../queries/getAllShows";
 import AppNavBar from '../components/AppNavBar';
-import MovieCard from '../components/MovieCard';
+import MovieCard from '../components/MovieCard'
 import { CardDeck } from 'react-bootstrap';
 
 
 
-const Shows = () => {
-
-    const { data, loading, error } = useQuery(GET_ALL_SHOWS);
-    if (loading) return <p>Loading</p>;
-    if (error) return <p>ERROR</p>;
-    if (!data) return <p>NOT FOUND</p>;
-
-    console.log(data);
-
+const ShowGrid = (props) => {
     return (
         <div>
-            <AppNavBar></AppNavBar>
             <CardDeck>
                 <Fragment>
                     {
-                        data.shows.map(show => {
+                        props && props.shows.show && props.shows.show.length
+                        ? props.shows.show.map(show => {
                             return <MovieCard key={show.id} show={show} />
+                        })
+                        : props.shows.shows.map(item => {
+                            return <MovieCard key={item.id} show={item} />
                         })
                     }
                 </Fragment>
             </CardDeck>
-
         </div>
     );
 }
 
-export default Shows;
+export default ShowGrid;

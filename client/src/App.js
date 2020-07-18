@@ -6,9 +6,9 @@ import {
   Link
 } from 'react-router-dom';
 import './App.css';
-import Shows from './containers/Shows';
 import LoginForm from './containers/loginForm'
 import MyShows from './containers/myShows';
+import MainShowContainer from './containers/MainShowContainer';
 
 function App() {
   return (
@@ -21,7 +21,7 @@ function App() {
           <LoginForm></LoginForm>
         </Route>
         <Route path="/">
-          <Shows></Shows>
+          <MainShowContainer></MainShowContainer>
         </Route>
       </Switch>
     </Router>
