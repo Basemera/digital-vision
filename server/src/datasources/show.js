@@ -124,7 +124,6 @@ class ShowAPI extends RESTDataSource {
 
     //implement show reducer
     showReducer(show){
-        console.log(show.image);
         return {
             id: show.id || 0,
             url: show.url,

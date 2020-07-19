@@ -1,13 +1,13 @@
 const SQL = require('sequelize');
-const {Sequelize} = require('sequelize');
+const { Sequelize } = require('sequelize');
 
 
 module.exports.createStore = () => {
     const db = new Sequelize({
         dialect: 'sqlite',
         storage: './store.sqlite'
-      });
-    
+    });
+
     // const Op = SQL.Op;
     // const operatorsAliases = {
     //     $in: Op.in,
@@ -19,11 +19,11 @@ module.exports.createStore = () => {
     // logging: false,
     // });
 
-    const users = db.define('users', {
+    let users = db.define('users', {
         id: {
-          type: Sequelize.INTEGER,
-          primaryKey: true,
-          autoIncrement: true,
+            type: Sequelize.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
         },
         // createdAt: Sequelize.DATE,
         // updatedAt: Sequelize.DATE,
@@ -32,7 +32,8 @@ module.exports.createStore = () => {
             unique: true
         },
         password: Sequelize.STRING,
-      });
+    },
+    );
 
     const shows = db.define('shows', {
         id: {
@@ -59,7 +60,7 @@ module.exports.createStore = () => {
         user: {
             type: SQL.INTEGER
         }
-    },  
+    },
     );
 
     const comments = db.define('comments', {
@@ -94,7 +95,7 @@ module.exports.createStore = () => {
     // );
     // Sequelize.sync();   
 
-    db.sync({force: true}).then(() => {db.close});
+    db.sync({ force: true }).then(() => { db.close });
 
     return { db, users, shows, comments, };
 }

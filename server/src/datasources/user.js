@@ -1,5 +1,13 @@
 const { DataSource } = require('apollo-datasource');
-// const isEmail = require('isemail');
+const bcrypt = require('bcryptjs');
+
+hashPassword = function (password) {
+  return bcrypt.hashSync(password, bcrypt.genSaltSync());
+}
+
+validatePassword = function (unHashedPassword, userHashedPassword) {
+  return bcrypt.compareSync(unHashedPassword, userHashedPassword);
+}
 
 class UserAPI extends DataSource {
   constructor({ store }) {
@@ -18,54 +26,59 @@ class UserAPI extends DataSource {
   }
 
 
-  async validateUser({ username, password}) {
-      //hash password
-      let user = await this.store.users.findOne({ where: { username: username } });
-      if (user) {
-          return user;
-      }
-       [user] = await this.store.users.create( { username: username, password: password } );
+  async validateUser({ username, password }) {
+    //hash password
 
+    let user = await this.store.users.findOne({ where: { username: username } });
+    if (user) {
       return user;
+    }
+    let hashedPassword = hashPassword(password);
+    [user] = await this.store.users.create({ username: username, password: hashedPassword });
+
+    return user
   }
+
+  
 
   /**
    * User can be called with an argument that includes email, but it doesn't
    * have to be. If the user is already on the context, it will use that user
    * instead
    */
-//   async findOrCreateUser({ username: username, password: password} = {}) {
-//     const user =
-//       this.context && this.context.user ? this.context.user.email : emailArg;
-//     if (!email || !isEmail.validate(email)) return null;
+  //   async findOrCreateUser({ username: username, password: password} = {}) {
+  //     const user =
+  //       this.context && this.context.user ? this.context.user.email : emailArg;
+  //     if (!email || !isEmail.validate(email)) return null;
 
-//     const users = await this.store.users.findOrCreate({ where: { email } });
-//     return users && users[0] ? users[0] : null;
-//   }
+  //     const users = await this.store.users.findOrCreate({ where: { email } });
+  //     return users && users[0] ? users[0] : null;
+  //   }
 
   async registerUser({ username, password }) {
     return this.validateUser({ username, password });
-}
+  }
 
-async login( { username, password }) {
-     const user = await this.store.users.findOne({ where: { username: username, password: password } })
-     return user;
-}
 
-async addShowToSchedule( showIds ) {
+  async login({ username, password }) {
+    const user = await this.store.users.findOne({ where: { username: username  } })
+    return  user && validatePassword(password, user.password) ? user : undefined;
+  }
+
+  async addShowToSchedule(showIds) {
     const userId = this.context.user.id;
     if (!userId) return;
 
     let results = [];
 
     for (const showId of showIds.showIds) {
-        const res = await this.addShow({ showId });
-        if (res) results.push(res);
+      const res = await this.addShow({ showId });
+      if (res) results.push(res);
     }
     return results;
-}
+  }
 
-async addShow({ showId }) {
+  async addShow({ showId }) {
     const userId = this.context.user.id;
     const res = await this.store.shows.findOrCreate({
       where: { user: userId, showId: showId.showId, name: showId.name },
@@ -73,21 +86,21 @@ async addShow({ showId }) {
     return res && res.length ? res[0].get() : false;
   }
 
-  async setShowToWatched( showIds ) {
+  async setShowToWatched(showIds) {
     const userId = this.context.user.id;
     if (!userId) return;
-    let results =[];
+    let results = [];
     for (const showId of showIds.showIds) {
       const res = await this.addShowToWatched({ showId });
       if (res) results.push(res);
-  }
+    }
     return results;
   }
 
   async addShowToWatched({ showId }) {
     const userId = this.context.user.id;
     const res = await this.store.shows.findOne({
-      where: { user: userId, showId: showId.showId}
+      where: { user: userId, showId: showId.showId }
     });
     if (res) {
       res.watched = true;
@@ -99,21 +112,21 @@ async addShow({ showId }) {
     }
   }
 
-  async setFavouriteShow( showIds ) {
+  async setFavouriteShow(showIds) {
     const userId = this.context.user.id;
     if (!userId) return;
     let results = [];
     for (const showId of showIds.showIds) {
       const res = await this.favouriteWatchedShow({ showId });
       if (res) results.push(res);
-  }
+    }
     return results;
   }
 
   async favouriteWatchedShow({ showId }) {
     const userId = this.context.user.id;
     const res = await this.store.shows.findOne({
-      where: { user: userId, showId: showId.showId}
+      where: { user: userId, showId: showId.showId }
     });
     if (res && res.watched) {
       res.favourited = true;
@@ -136,27 +149,28 @@ async addShow({ showId }) {
   }
 
   async postCommentsOnShow({ showId, commentText }) {
-      const userId = this.context.user.id;
-      // console.log(commentText);
+    const userId = this.context.user.id;
+    // console.log(commentText);
 
-      if (!userId) return;
-      const show =  await this.findShow({ showId });
-      console.log(commentText);
+    if (!userId) return;
+    const show = await this.findShow({ showId });
+    // handle show doesn't exit
+    console.log(commentText);
 
-      if (show.watched) {
-        const comment = await this.addComment({ showId, commentText });
-        if (comment) {
-          const res = this.commentReducer(comment, userId);
-          return res;
-        }
-      }
-      else {
-        const res = this.commentReducer([]);
+    if (show.watched) {
+      const comment = await this.addComment({ showId, commentText });
+      if (comment) {
+        const res = this.commentReducer(comment, userId);
         return res;
       }
+    }
+    else {
       const res = this.commentReducer([]);
-      return res; 
-     }
+      return res;
+    }
+    const res = this.commentReducer([]);
+    return res;
+  }
 
   async addComment({ showId, commentText }) {
     const userId = this.context.user.id;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Container from "react-bootstrap/Container";
 import { Row, Col, Card, Form, Button } from "react-bootstrap";
 import {
@@ -24,6 +24,10 @@ function LoginForm() {
 
     let { from } = location.state || { from: { pathname:"/shows" }}
 
+    let [username, setUsername] = useState()
+    let [password, setPassword] = useState()
+
+
     let login = () => {
         fakeAuth.authenticate(()=> {
             history.replace(from)
@@ -46,10 +50,21 @@ function LoginForm() {
                                         </div>
                                         <Form className="user">
                                             <Form.Group className="form-group" controlId="exampleInputEmail">
-                                                <Form.Control type="email" className="form-control form-control-user" placeholder="Enter Email Address..."></Form.Control>
+                                                <Form.Control type="text" className="form-control form-control-user" placeholder="Enter username..." onChange={
+                                                    (event) => {
+                                                        setUsername(event.target.value)
+                                                        console.log(event.target.value)
+                                                    }
+                                                }></Form.Control>
                                             </Form.Group>
                                             <Form.Group className="form-group" controlId="exampleInputPassword">
-                                                <Form.Control type="password" className="form-control form-control-user" placeholder="Password"></Form.Control>
+                                                <Form.Control type="password" className="form-control form-control-user" placeholder="Password" onChangeCapture={
+                                                    (event) => {
+                                                        setPassword(event.target.value)
+                                                        console.log(event.target.value)
+
+                                                    }
+                                                }></Form.Control>
                                             </Form.Group>
                                             <Form.Group controlId="customCheck" className="form-group">
                                                 <div className="custom-control custom-checkbox small">
@@ -58,7 +73,7 @@ function LoginForm() {
                                                 </div>
                                             </Form.Group>
                                             {/* <Button onClick={login} className="btn btn-primary btn-user btn-block">Login</Button> */}
-                                            <AuthButton history={from}/>
+                                            <AuthButton input={ {username: username, password:password} } history={from}/>
                                             <hr></hr>
                                         </Form>
                                         <div className="text-center">

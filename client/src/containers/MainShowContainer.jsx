@@ -11,30 +11,40 @@ import {
     Form,
     Button,
     FormControl,
-    Spinner
+    Spinner,
+    InputGroup
 } from 'react-bootstrap';
 
 
 function MainShowContainer() {
 
-    function handleSearch(){
+    function handleSearch() {
         console.log(`searching for shows with ${searchTerm}`)
         query = SEARCH_BY_NAME
-        setVariables({name:searchTerm})
+        setVariables({ name: searchTerm })
         setQuery(query)
     }
 
-    function handleActionSearch() {
+    function handleActionSearch(e) {
         console.log(`searching for shows by genre`);
-        query = SEARCH_BY_GENRE
-        setVariables({genre:"Comedy"})
-        setQuery(query)
+        console.log(e)
+        if (e == "Action") {
+            query = SEARCH_BY_GENRE
+            setVariables({ genre: e })
+            setQuery(query)
+        }
+        // if (e == "Drama") {
+
+        // query = SEARCH_BY_RATING
+        // setVariables({rating:e})
+        // setQuery(query)
+        // }
     }
 
     let [variables, setVariables] = useState()
-    let[query, setQuery] = useState(GET_ALL_SHOWS)
+    let [query, setQuery] = useState(GET_ALL_SHOWS)
     let [searchTerm, setSearchTerm] = useState();
-    let { data, loading, error } = useQuery(query, {variables});
+    let { data, loading, error } = useQuery(query, { variables });
     console.log(data)
     return (
 
@@ -48,43 +58,59 @@ function MainShowContainer() {
                             <Nav.Link href="#home">Shows</Nav.Link>
                             <Nav.Link href="#link">My Shows</Nav.Link>
                             <NavDropdown title="Genres" id="basic-nav-dropdown">
-                                <NavDropdown.Item onClick={handleActionSearch} href="#action/3.3">Action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.1">Drama</NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.2">Comedy</NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.3">Crime</NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.3">Childrem</NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.3">Music</NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.3">Romance</NavDropdown.Item>
+                                <NavDropdown.Item onSelect={(e, eventKey) => { handleActionSearch(e) }} eventKey="Action" href="#action/3.3">Action</NavDropdown.Item>
+                                <NavDropdown.Item onSelect={(e, eventKey) => { handleActionSearch(e) }} eventKey="Drama" href="#action/3.1">Drama</NavDropdown.Item>
+                                <NavDropdown.Item onSelect={(e, eventKey) => { handleActionSearch(e) }} eventKey="Comedy" href="#action/3.2">Comedy</NavDropdown.Item>
+                                <NavDropdown.Item onSelect={(e, eventKey) => { handleActionSearch(e) }} eventKey="Crime" href="#action/3.3">Crime</NavDropdown.Item>
+                                <NavDropdown.Item onSelect={(e, eventKey) => { handleActionSearch(e) }} eventKey="Children" href="#action/3.3">Children</NavDropdown.Item>
+                                <NavDropdown.Item onSelect={(e, eventKey) => { handleActionSearch(e) }} eventKey="Music" href="#action/3.3">Music</NavDropdown.Item>
+                                <NavDropdown.Item onSelect={(e, eventKey) => { handleActionSearch(e) }} eventKey="Romance" href="#action/3.3">Romance</NavDropdown.Item>
                                 <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
+                                <NavDropdown.Item href="#action/3.4">
+                                    
+                                    </NavDropdown.Item>
                             </NavDropdown>
+                            <InputGroup className="mb-3">
+                                        <InputGroup.Prepend>
+                                            <InputGroup.Text id="basic-addon1">Rating</InputGroup.Text>
+                                        </InputGroup.Prepend>
+                                        <FormControl
+                                            placeholder="Rating"
+                                            aria-label="Rating"
+                                            aria-describedby="basic-addon1"
+                                            onChangeCapture={(e) => {
+                                                console.log(e.target.value)
+                                                // handleRatingSearch(e)
+                                            }}
+                                        />
+                                    </InputGroup>
                         </Nav>
                         <Form inline>
-                            <FormControl 
-                            onKeyPress={
-                                (event) => {
-                                    if (event.key === "Enter"){
-                                        setSearchTerm(event.target.value)
-                                        handleSearch()
-                                        event.preventDefault();
-                                    }
-                                    
-                                }
-                            } 
-                            onChange={
-                                (event) => {
-                                    setSearchTerm(event.target.value)
-                                }
-                            }
+                            <FormControl
+                                onKeyPress={
+                                    (event) => {
+                                        if (event.key === "Enter") {
+                                            setSearchTerm(event.target.value)
+                                            handleSearch()
+                                            event.preventDefault();
+                                        }
 
-                            type="text" placeholder="Search" className="mr-sm-2"/>
+                                    }
+                                }
+                                onChange={
+                                    (event) => {
+                                        setSearchTerm(event.target.value)
+                                    }
+                                }
+
+                                type="text" placeholder="Search" className="mr-sm-2" />
                             <Button variant="outline-success" onClick={handleSearch}>Search</Button>
                         </Form>
                     </Navbar.Collapse>
                 </Navbar>
             </div>
             {
-                loading || error || !data ? <Spinner animation="border" role="status"><span className="sr-only">Loading...</span></Spinner>:<ShowGrid shows={ data }></ShowGrid>
+                loading || error || !data ? <Spinner animation="border" role="status"><span className="sr-only">Loading...</span></Spinner> : <ShowGrid shows={data}></ShowGrid>
             }
         </Fragment>
 
