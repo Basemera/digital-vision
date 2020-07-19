@@ -5,15 +5,20 @@ import {
 } from 'react-router-dom';
 import fakeAuth from '../handlers/fakeAuth';
 import AppNavBar from '../components/AppNavBar';
+import IS_LOGGED_IN from '../queries/isLoggedIn'
+import { useQuery } from 'react-apollo'
+
+
 
 function MyShows({ children, ...rest}) {
+    const{data} = useQuery(IS_LOGGED_IN)
     return(
         <div>
             <AppNavBar></AppNavBar>
             <Route 
                 { ...rest}
                 render={
-                    ({location}) => fakeAuth.isAuthenticated ? (<p>We are authenticated</p>) : <Redirect to={{ pathname:"/login", state: {from: location}}}></Redirect>
+                    ({location}) => data.isLoggedIn ? (<p>We are authenticated</p>) : <Redirect to={{ pathname:"/login", state: {from: location}}}></Redirect>
                 }
             />
         </div>

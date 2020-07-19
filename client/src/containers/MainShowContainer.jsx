@@ -14,21 +14,32 @@ import {
     Spinner,
     InputGroup
 } from 'react-bootstrap';
+import {
+    useLocation,
+    useHistory
+} from 'react-router-dom'
 
 
 function MainShowContainer() {
+    const location= useLocation();
+    const history = useHistory()
+    function setPathName({ ...location}){
+        let {pathname} = location;
+        pathname = "/shows"
+        history.push(pathname)
+    }
+    console.log(location)
+    console.log(history)
+    
 
     function handleSearch() {
-        console.log(`searching for shows with ${searchTerm}`)
         query = SEARCH_BY_NAME
         setVariables({ name: searchTerm })
         setQuery(query)
     }
 
     function handleActionSearch(e) {
-        console.log(`searching for shows by genre`);
-        console.log(e)
-        if (e == "Action") {
+        if (e === "Action") {
             query = SEARCH_BY_GENRE
             setVariables({ genre: e })
             setQuery(query)
@@ -45,7 +56,6 @@ function MainShowContainer() {
     let [query, setQuery] = useState(GET_ALL_SHOWS)
     let [searchTerm, setSearchTerm] = useState();
     let { data, loading, error } = useQuery(query, { variables });
-    console.log(data)
     return (
 
         <Fragment>

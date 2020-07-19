@@ -6,16 +6,32 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { typeDefs, resolvers } from './resolver'
+
 
 const cache = new InMemoryCache();
 const link = new HttpLink({
+  headers: { authorization: localStorage.getItem('token') },
   uri: 'http://localhost:4000/'
 });
 
+cache.writeData({
+  data: {
+    isLoggedIn: !!localStorage.getItem('token'),
+    cartItems: [],
+  },
+});
+
+
+
 const client = new ApolloClient({
   cache,
-  link
+  link,
+  typeDefs,
+  resolvers
 });
+
+
 
 ReactDOM.render(
   <ApolloProvider client={ client }>

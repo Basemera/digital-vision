@@ -9,19 +9,35 @@ import './App.css';
 import LoginForm from './containers/loginForm'
 import MyShows from './containers/myShows';
 import MainShowContainer from './containers/MainShowContainer';
+import IS_LOGGED_IN from './queries/isLoggedIn';
+import { useQuery } from 'react-apollo'
+
+// function IsLoggedIn() {
+//   const { data } = useQuery(IS_LOGGED_IN);
+//   return data.isLoggedIn ? <Pages /> : <Login />;
+// }
 
 function App() {
+
+  const {data} = useQuery(IS_LOGGED_IN)
+
   return (
     <Router>
       <Switch>
         <Route path="/shows">
-          <MyShows></MyShows>
+          {
+            data.isLoggedIn ? <MyShows></MyShows> : <LoginForm></LoginForm>
+          }   
         </Route>
         <Route path="/login">
-          <LoginForm></LoginForm>
+          {
+            data.isLoggedIn ? <MainShowContainer></MainShowContainer> : <LoginForm></LoginForm>
+          }
         </Route>
         <Route path="/">
-          <MainShowContainer></MainShowContainer>
+          {
+            data.isLoggedIn ? <MainShowContainer></MainShowContainer> : <LoginForm></LoginForm>
+          }
         </Route>
       </Switch>
     </Router>

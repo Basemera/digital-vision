@@ -9,31 +9,52 @@ import {
     useLocation
 } from 'react-router-dom';
 import AuthButton from '../components/authButton'
-
 import fakeAuth from '../handlers/fakeAuth';
 
+import { useMutation, useApolloClient } from 'react-apollo'
+import LOGIN_USER from '../queries/login'
 
 
 
 
 
 
-function LoginForm() { 
+
+function LoginForm() {
     let history = useHistory();
     let location = useLocation();
+    let [token, setToken] = useState()
+    const client = useApolloClient();
+    let [login, { data }] = useMutation(LOGIN_USER, {
+        onCompleted({ login }) {
+            localStorage.setItem("token", login.token);
+            client.writeData({ data: { isLoggedIn: login.token === localStorage.getItem('token') } });
+        }
+    });
+    
+    async function onLoginHandler(){
+        let resultData = await login({variables:{username, password}})
+        if(resultData.data.login.username !== null && resultData.data.login.token !== null){
+            setToken(resultData.data.login.token)
+            //localStorage.setItem("token",resultData.data.login.token)
+            history.push(from);
+            console.log(location)
+        }
+        
+    }
 
-    let { from } = location.state || { from: { pathname:"/shows" }}
+    let { from } = location.state || { from: { pathname: "/" } }
 
     let [username, setUsername] = useState()
     let [password, setPassword] = useState()
 
 
-    let login = () => {
-        fakeAuth.authenticate(()=> {
-            history.replace(from)
-        });
-        
-    }
+    // let login = () => {
+    //     fakeAuth.authenticate(()=> {
+    //         history.replace(from)
+    //     });
+
+    // }
     return (
         <Container fluid className="bg-gradient-primary">
             <Row className="justify-content-center">
@@ -53,7 +74,6 @@ function LoginForm() {
                                                 <Form.Control type="text" className="form-control form-control-user" placeholder="Enter username..." onChange={
                                                     (event) => {
                                                         setUsername(event.target.value)
-                                                        console.log(event.target.value)
                                                     }
                                                 }></Form.Control>
                                             </Form.Group>
@@ -61,8 +81,6 @@ function LoginForm() {
                                                 <Form.Control type="password" className="form-control form-control-user" placeholder="Password" onChangeCapture={
                                                     (event) => {
                                                         setPassword(event.target.value)
-                                                        console.log(event.target.value)
-
                                                     }
                                                 }></Form.Control>
                                             </Form.Group>
@@ -73,7 +91,7 @@ function LoginForm() {
                                                 </div>
                                             </Form.Group>
                                             {/* <Button onClick={login} className="btn btn-primary btn-user btn-block">Login</Button> */}
-                                            <AuthButton input={ {username: username, password:password} } history={from}/>
+                                            <Button className="btn btn-primary btn-user btn-block" onClick={onLoginHandler} history={from}>Login</Button>
                                             <hr></hr>
                                         </Form>
                                         <div className="text-center">

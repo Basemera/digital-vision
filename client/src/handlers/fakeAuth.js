@@ -1,3 +1,6 @@
+
+
+
 const fakeAuth  = {
     isAuthenticated: false,
     authenticate(cb){
@@ -9,5 +12,3 @@ const fakeAuth  = {
         setTimeout(cb, 100);
     }
 }
-
-export default fakeAuth;
