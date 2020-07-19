@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server/src/index.js"
+    "start": "node server/src/index.js",
+    "install-client": "cd client && npm install -s",
+    "start-client": "cd client && npm start"
   },
   "author": "Phiona Basemera",
   "license": "ISC",
