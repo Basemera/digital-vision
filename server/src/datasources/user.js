@@ -1,7 +1,7 @@
 const { DataSource } = require('apollo-datasource');
 const bcrypt = require('bcryptjs');
 
-hashPassword = function (password) {
+hashPassword = function ({ password }) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync());
 }
 
@@ -27,9 +27,10 @@ class UserAPI extends DataSource {
 
 
   async validateUser({ username, password }) {
+    debugger;
     //hash password
 
-    let user = await this.store.users.findOne({ where: { username: username } });
+    let user = this.store.users.findOne({ where: { username: username } });
     if (user) {
       return user;
     }
@@ -56,7 +57,15 @@ class UserAPI extends DataSource {
   //   }
 
   async registerUser({ username, password }) {
-    return this.validateUser({ username, password });
+    let [user, created] = await this.store.users.findOrCreate( {where: { username },
+      defaults: {
+        password: hashPassword({password})
+      }
+    })
+    if(!created){
+      return user;
+    }
+    return user;
   }
 
 
