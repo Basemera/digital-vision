@@ -8,25 +8,12 @@ module.exports.createStore = () => {
         storage: './store.sqlite'
     });
 
-    // const Op = SQL.Op;
-    // const operatorsAliases = {
-    //     $in: Op.in,
-    //   };
-    // const db = new SQL('database', 'username', 'password', {
-    // dialect: 'sqlite',
-    // storage: './store.sqlite',
-    // operatorsAliases,
-    // logging: false,
-    // });
-
     let users = db.define('users', {
         id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true,
         },
-        // createdAt: Sequelize.DATE,
-        // updatedAt: Sequelize.DATE,
         username: {
             type: Sequelize.STRING,
             unique: true
@@ -43,11 +30,6 @@ module.exports.createStore = () => {
         },
         name: SQL.STRING,
         showId: SQL.INTEGER,
-        // url: SQL.STRING,
-        // dateOfPremier: SQL.DATE,
-        // status: {
-        //     type: SQL.INTEGER
-        // },
         comments: {
             type: SQL.INTEGER
         },
@@ -73,27 +55,6 @@ module.exports.createStore = () => {
         show: SQL.INTEGER,
         comment: SQL.TEXT
     })
-
-    // const genre = db.define('genre', {
-    //     id:  {
-    //         type: SQL.INTEGER,
-    //         primaryKey: true,
-    //         autoIncrement: true,
-    //     },
-    //     name: SQL.STRING,
-    // }
-    // );
-
-    // const status = db.define('status', {
-    //     id:  {
-    //         type: SQL.INTEGER,
-    //         primaryKey: true,
-    //         autoIncrement: true,
-    //     },
-    //     name: SQL.STRING,
-    // }
-    // );
-    // Sequelize.sync();   
 
     db.sync({ force: true }).then(() => { db.close });
 

@@ -29,5 +29,8 @@
     "sequelize": "^6.3.3",
     "sqlite3": "^5.0.0",
     "typescript": "^3.9.6"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }

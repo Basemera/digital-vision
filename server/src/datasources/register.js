@@ -1,5 +1,0 @@
-class RegisterUser {
-    // recieve data
-
-    
-}

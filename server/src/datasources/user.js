@@ -27,8 +27,6 @@ class UserAPI extends DataSource {
 
 
   async validateUser({ username, password }) {
-    debugger;
-    //hash password
 
     let user = this.store.users.findOne({ where: { username: username } });
     if (user) {
@@ -40,21 +38,6 @@ class UserAPI extends DataSource {
     return user
   }
 
-  
-
-  /**
-   * User can be called with an argument that includes email, but it doesn't
-   * have to be. If the user is already on the context, it will use that user
-   * instead
-   */
-  //   async findOrCreateUser({ username: username, password: password} = {}) {
-  //     const user =
-  //       this.context && this.context.user ? this.context.user.email : emailArg;
-  //     if (!email || !isEmail.validate(email)) return null;
-
-  //     const users = await this.store.users.findOrCreate({ where: { email } });
-  //     return users && users[0] ? users[0] : null;
-  //   }
 
   async registerUser({ username, password }) {
     let [user, created] = await this.store.users.findOrCreate( {where: { username },
@@ -148,23 +131,17 @@ class UserAPI extends DataSource {
   }
 
   async findShow({ showId }) {
-    // console.log(showId);
     const userId = this.context.user.id;
     const res = await this.store.shows.findOrCreate({
       where: { user: userId, showId: showId, },
     });
-    // console.log(res[0].get())
     return res && res.length ? res[0].get() : false;
   }
 
   async postCommentsOnShow({ showId, commentText }) {
     const userId = this.context.user.id;
-    // console.log(commentText);
-
     if (!userId) return;
     const show = await this.findShow({ showId });
-    // handle show doesn't exit
-    console.log(commentText);
 
     if (show.watched) {
       const comment = await this.addComment({ showId, commentText });
@@ -186,7 +163,6 @@ class UserAPI extends DataSource {
     const res = await this.store.comments.findOrCreate({
       where: { commentor: userId, show: showId, comment: commentText },
     });
-    console.log(res.length);
     return res && res.length ? res[0].get() : false;
   }
 

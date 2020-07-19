@@ -8,9 +8,6 @@ import {
     useHistory,
     useLocation
 } from 'react-router-dom';
-import AuthButton from '../components/authButton'
-import fakeAuth from '../handlers/fakeAuth';
-
 import { useMutation, useApolloClient } from 'react-apollo'
 import LOGIN_USER from '../queries/login'
 
@@ -36,9 +33,7 @@ function LoginForm() {
         let resultData = await login({variables:{username, password}})
         if(resultData.data.login.username !== null && resultData.data.login.token !== null){
             setToken(resultData.data.login.token)
-            //localStorage.setItem("token",resultData.data.login.token)
             history.push(from);
-            console.log(location)
         }
         
     }
@@ -47,14 +42,6 @@ function LoginForm() {
 
     let [username, setUsername] = useState()
     let [password, setPassword] = useState()
-
-
-    // let login = () => {
-    //     fakeAuth.authenticate(()=> {
-    //         history.replace(from)
-    //     });
-
-    // }
     return (
         <Container fluid className="bg-gradient-primary">
             <Row className="justify-content-center">
@@ -90,7 +77,6 @@ function LoginForm() {
                                                     <Form.Label className="custom-control-label">Remember Me</Form.Label>
                                                 </div>
                                             </Form.Group>
-                                            {/* <Button onClick={login} className="btn btn-primary btn-user btn-block">Login</Button> */}
                                             <Button className="btn btn-primary btn-user btn-block" onClick={onLoginHandler} history={from}>Login</Button>
                                             <hr></hr>
                                         </Form>

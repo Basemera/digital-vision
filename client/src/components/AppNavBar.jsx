@@ -21,38 +21,25 @@ import Searchname from './Searchname.jsx';
 import MovieCard from '../components/MovieCard';
 import { CardDeck } from 'react-bootstrap';
 import SearchName from '../containers/SearchName.jsx';
-import Searchbygenre from './Searchbygenre.jsx';
+import SearchByGenre from './Searchbygenre.jsx';
 
 const AppNavBar = () => {
     const [name, setName] = useState('')
     const { loading, error, data } = useQuery(SEARCH_BY_NAME, {
         variables: { name },
     });
-
-    data != undefined && data.show != [] ? console.log(data.show) : console.log('go');
     const [show, setShow] = useState(false);
     const [genre, setSearchTerm] = useState('');
 
     const handleClose = (genre, e) => {
-        // console.log("memem");
-        console.log(genre)
 
         return (
-            <Searchbygenre name={e} />
+            <SearchByGenre name={e} />
         )
-        // Searchbygenre(e)
-
-
-        // setShow(false)
     };
     const handleShow = (e) => {
-        // setSearchTerm(e);
-        console.log("tr");
         setShow(true);
         setSearchTerm(e)
-        // setShow(false);
-
-        // console.log(event.target.value)
     }
 
 
@@ -103,38 +90,6 @@ const AppNavBar = () => {
 
                                     <Button variant="outline-success">Search</Button>
                                 </Form>
-
-
-
-
-
-                                <Modal show={show} genre={genre} onHide={handleClose(genre)}>
-                                    <Modal.Header closeButton>
-                                        <Modal.Title>Search</Modal.Title>
-                                    </Modal.Header>
-                                    <Modal.Body>
-                                        <Form>
-
-                                            <FormControl type="text" placeholder="enter search term" className="mr-sm-2" onKeyPress={
-                                                async (event) => {
-                                                    if (event.key === "Enter") {
-                                                        console.log(event.target.value);
-                                                        handleClose(event)
-                                                    }
-                                                }
-                                            } />
-
-
-                                        </Form>
-                                    </Modal.Body>
-                                    <Modal.Footer>
-
-                                    </Modal.Footer>
-                                </Modal>
-
-
-
-
                             </Navbar.Collapse>
                         </Navbar>
                     </div>

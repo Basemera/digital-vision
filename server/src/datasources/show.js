@@ -44,7 +44,6 @@ class ShowAPI extends RESTDataSource {
 
     async getShowByName({name}) {
         const response = await this.get(`search/shows`, { q: name });
-        // console.log(response);
         return Array.isArray(response)
             ? response.map(show => this.showReducer(show.show))
             : [];
@@ -55,7 +54,6 @@ class ShowAPI extends RESTDataSource {
         const shows =  await this.get('shows')
         if(Array.isArray(shows)){
             shows.map(show => show.genres.filter(item => {
-                // console.log(item)
                 if(item == genre){
                     resultSet.push(this.showReducer(show))
                 }
@@ -117,10 +115,6 @@ class ShowAPI extends RESTDataSource {
         }
     }
     
-
-    async getShowUsingMultipleFilters(...args) { // to be implemented
-
-    }
 
     //implement show reducer
     showReducer(show){

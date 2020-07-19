@@ -3,7 +3,6 @@ import {
     Route,
     Redirect
 } from 'react-router-dom';
-import fakeAuth from '../handlers/fakeAuth';
 import AppNavBar from '../components/AppNavBar';
 import IS_LOGGED_IN from '../queries/isLoggedIn'
 import { useQuery } from 'react-apollo'

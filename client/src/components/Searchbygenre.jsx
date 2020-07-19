@@ -19,7 +19,7 @@ import {
     Modal
 } from 'react-bootstrap';
 
-const Searchbygenre = (props) => {
+const SearchByGenre = (props) => {
     console.log(props);
     const name = props.name;
     console.log(name);
@@ -35,4 +35,4 @@ const Searchbygenre = (props) => {
         )
 
 }
-export default Searchbygenre;
+export default SearchByGenre;

@@ -21,16 +21,14 @@ import {
 
 
 function MainShowContainer() {
-    const location= useLocation();
+    const location = useLocation();
     const history = useHistory()
-    function setPathName({ ...location}){
-        let {pathname} = location;
+    function setPathName({ ...location }) {
+        let { pathname } = location;
         pathname = "/shows"
         history.push(pathname)
     }
-    console.log(location)
-    console.log(history)
-    
+
 
     function handleSearch() {
         query = SEARCH_BY_NAME
@@ -44,12 +42,6 @@ function MainShowContainer() {
             setVariables({ genre: e })
             setQuery(query)
         }
-        // if (e == "Drama") {
-
-        // query = SEARCH_BY_RATING
-        // setVariables({rating:e})
-        // setQuery(query)
-        // }
     }
 
     let [variables, setVariables] = useState()
@@ -61,12 +53,12 @@ function MainShowContainer() {
         <Fragment>
             <div>
                 <Navbar bg="light" expand="lg">
-                    <Navbar.Brand href="#home">Digital Vision</Navbar.Brand>
+                    <Navbar.Brand href="/">Digital Vision</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mr-auto">
-                            <Nav.Link href="#home">Shows</Nav.Link>
-                            <Nav.Link href="#link">My Shows</Nav.Link>
+                            <Nav.Link href="/">Shows</Nav.Link>
+                            <Nav.Link href="/shows">My Shows</Nav.Link>
                             <NavDropdown title="Genres" id="basic-nav-dropdown">
                                 <NavDropdown.Item onSelect={(e, eventKey) => { handleActionSearch(e) }} eventKey="Action" href="#action/3.3">Action</NavDropdown.Item>
                                 <NavDropdown.Item onSelect={(e, eventKey) => { handleActionSearch(e) }} eventKey="Drama" href="#action/3.1">Drama</NavDropdown.Item>
@@ -77,23 +69,22 @@ function MainShowContainer() {
                                 <NavDropdown.Item onSelect={(e, eventKey) => { handleActionSearch(e) }} eventKey="Romance" href="#action/3.3">Romance</NavDropdown.Item>
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item href="#action/3.4">
-                                    
-                                    </NavDropdown.Item>
+
+                                </NavDropdown.Item>
                             </NavDropdown>
                             <InputGroup className="mb-3">
-                                        <InputGroup.Prepend>
-                                            <InputGroup.Text id="basic-addon1">Rating</InputGroup.Text>
-                                        </InputGroup.Prepend>
-                                        <FormControl
-                                            placeholder="Rating"
-                                            aria-label="Rating"
-                                            aria-describedby="basic-addon1"
-                                            onChangeCapture={(e) => {
-                                                console.log(e.target.value)
-                                                // handleRatingSearch(e)
-                                            }}
-                                        />
-                                    </InputGroup>
+                                <InputGroup.Prepend>
+                                    <InputGroup.Text id="basic-addon1">Rating</InputGroup.Text>
+                                </InputGroup.Prepend>
+                                <FormControl
+                                    placeholder="Rating"
+                                    aria-label="Rating"
+                                    aria-describedby="basic-addon1"
+                                    onChangeCapture={(e) => {
+                                        //TODO: implement handleRatingSearch(e)
+                                    }}
+                                />
+                            </InputGroup>
                         </Nav>
                         <Form inline>
                             <FormControl
