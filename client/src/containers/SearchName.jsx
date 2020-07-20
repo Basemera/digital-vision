@@ -9,7 +9,6 @@ import { CardDeck } from 'react-bootstrap';
 
 const SearchName = (props) => {
 
-console.log(props.shows);
     return (
         <div>
             <AppNavBar></AppNavBar>

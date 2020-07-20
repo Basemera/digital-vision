@@ -1,7 +1,7 @@
 module.exports = {
     Query: {
-        shows: (_, { name, genre, status, premier, rating }, { dataSources }) => dataSources.showAPI.getShowByParameter({ name, genre, status, premier, rating }),
-
+        shows: (_, { name, genre, status, premier, rating, id }, { dataSources }) => dataSources.showAPI.getShowByParameter({ name, genre, status, premier, rating, id }),
+        show: (_, { id }, { dataSources }) => dataSources.showAPI.getShowById(id),
 
     },
 

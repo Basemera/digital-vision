@@ -49,6 +49,11 @@ class ShowAPI extends RESTDataSource {
             : [];
     }
 
+    async getShowById(id) {
+        const response = await this.get(`shows/${id}`);
+        return response ? this.showReducer(response) : [];
+    }
+
     async getShowByGenre({genre}) {
         let resultSet = []
         const shows =  await this.get('shows')

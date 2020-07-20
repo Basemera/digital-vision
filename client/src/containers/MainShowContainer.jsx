@@ -37,11 +37,12 @@ function MainShowContainer() {
     }
 
     function handleActionSearch(e) {
-        if (e === "Action") {
+        // if (e === "Action") {
             query = SEARCH_BY_GENRE
             setVariables({ genre: e })
             setQuery(query)
-        }
+        // }
+
     }
 
     let [variables, setVariables] = useState()

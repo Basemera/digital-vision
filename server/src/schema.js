@@ -91,6 +91,7 @@ const typeDefs = gql`
 
     type Query{
         shows (name: String, genre: String, rating: Float, premiere: String, status: String): [Show]
+        show (id:Int): Show
     }
 
     type LoginObject {
