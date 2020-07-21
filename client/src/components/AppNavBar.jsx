@@ -1,4 +1,9 @@
-import React, { useState, Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
+import { useQuery } from "react-apollo"
+import GET_ALL_SHOWS from "../queries/getAllShows";
+import SEARCH_BY_NAME from "../queries/searchByName";
+import SEARCH_BY_GENRE from "../queries/searchByGenre";
+import ShowGrid from "../containers/ShowGrid";
 import {
     Navbar,
     Nav,
@@ -6,104 +11,123 @@ import {
     Form,
     Button,
     FormControl,
-    Dropdown,
-    InputGroup,
-    DropdownButton,
-    Modal
+    Spinner,
+    InputGroup
 } from 'react-bootstrap';
+import {
+    useLocation,
+    useHistory
+} from 'react-router-dom'
 
-import { useQuery } from "@apollo/react-hooks";
-import SEARCH_BY_NAME from '../queries/searchByName.js';
-// import Search from './Search';
-import Search from '../components/Search';
-import Searchname from './Searchname.jsx';
 
-import MovieCard from '../components/MovieCard';
-import { CardDeck } from 'react-bootstrap';
-import SearchName from '../containers/SearchName.jsx';
-import SearchByGenre from './Searchbygenre.jsx';
-
-const AppNavBar = () => {
-    const [name, setName] = useState('')
-    const { loading, error, data } = useQuery(SEARCH_BY_NAME, {
-        variables: { name },
-    });
-    const [show, setShow] = useState(false);
-    const [genre, setSearchTerm] = useState('');
-
-    const handleClose = (genre, e) => {
-
-        return (
-            <SearchByGenre name={e} />
-        )
-    };
-    const handleShow = (e) => {
-        setShow(true);
-        setSearchTerm(e)
+function AppNarBar() {
+    const location = useLocation();
+    const history = useHistory()
+    function setPathName({ ...location }) {
+        let { pathname } = location;
+        pathname = "/show"
+        history.push(pathname)
     }
 
 
-    // define extra filters here. Get search terms from advanced filter add to array and then pass to AdvavcedSearchFilter. 
-    //In advanced filter filter by items in array. forexample if genre appears first then get by that genre.
-    // implement pagination which returns number of pages so loop thru until last page and apply filter
-    // then move on to next filter
-    // at every step display a new set of results t user
-    //until final result set
+    function handleSearch() {
+        query = SEARCH_BY_NAME
+        setVariables({ name: searchTerm })
+        setQuery(query)
+    }
 
+    function handleActionSearch(e) {
+        // if (e === "Action") {
+            query = SEARCH_BY_GENRE
+            setVariables({ genre: e })
+            setQuery(query)
+        // }
+    }
+
+    function handleButtonLogOut() {
+        console.log("I have clicked logout");
+        localStorage.removeItem('token');
+        window.location.reload()
+    }
+
+    let [variables, setVariables] = useState()
+    let [query, setQuery] = useState(GET_ALL_SHOWS)
+    let [searchTerm, setSearchTerm] = useState();
+    let { data, loading, error } = useQuery(query, { variables });
     return (
 
         <Fragment>
-
-            
-
-            {
-                data != undefined && data.show != undefined && data.show.length ?
-                    <SearchName shows={data.show} />
-                    :
-                    <div>
-                        <Navbar bg="light" expand="lg">
-                            <Navbar.Brand href="#home">Digital Vision</Navbar.Brand>
-                            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                            <Navbar.Collapse id="basic-navbar-nav">
-                                <Nav className="mr-auto">
-                                    <Nav.Link href="#home">Shows</Nav.Link>
-                                    <Nav.Link href="#link">My Shows</Nav.Link>
-                                    <NavDropdown title="Organise" id="basic-nav-dropdown">
-                                        <NavDropdown.Item href="#action/3.1" genre={"genre"} onClick={
-                                            (e) => { handleShow('genre') }}>Genre</NavDropdown.Item>
-                                        <NavDropdown.Item href="#action/3.2" onClick={handleShow}>Rating</NavDropdown.Item>
-                                        <NavDropdown.Item href="#action/3.3" onClick={handleShow}> Date of premier</NavDropdown.Item>
-                                        <NavDropdown.Divider />
-                                        <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-                                    </NavDropdown>
-                                </Nav>
-                                <Form inline>
-                                    <FormControl type="text" placeholder="Search" className="mr-sm-2" onKeyPress={
-                                        async (event) => {
-                                            if (event.key === "Enter") {
-
-                                                // event.preventDefault();
-                                                setName(event.target.value)
-                                            }
-                                        }
-                                    } />
-
-                                    <Button variant="outline-success">Search</Button>
-                                </Form>
-                            </Navbar.Collapse>
-                        </Navbar>
-                    </div>
-            }
-
             <div>
+                <Navbar bg="light" expand="lg">
+                    <Navbar.Brand href="/">Digital Vision</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="mr-auto">
+                            <Nav.Link href="/">Shows</Nav.Link>
+                            <Nav.Link href="/shows">My Shows</Nav.Link>
+                            <NavDropdown title="Genres" id="basic-nav-dropdown">
+                                <NavDropdown.Item onSelect={(e, eventKey) => { handleActionSearch(e) }} eventKey="Action" href="#action/3.3">Action</NavDropdown.Item>
+                                <NavDropdown.Item onSelect={(e, eventKey) => { handleActionSearch(e) }} eventKey="Drama" href="#action/3.1">Drama</NavDropdown.Item>
+                                <NavDropdown.Item onSelect={(e, eventKey) => { handleActionSearch(e) }} eventKey="Comedy" href="#action/3.2">Comedy</NavDropdown.Item>
+                                <NavDropdown.Item onSelect={(e, eventKey) => { handleActionSearch(e) }} eventKey="Crime" href="#action/3.3">Crime</NavDropdown.Item>
+                                <NavDropdown.Item onSelect={(e, eventKey) => { handleActionSearch(e) }} eventKey="Children" href="#action/3.3">Children</NavDropdown.Item>
+                                <NavDropdown.Item onSelect={(e, eventKey) => { handleActionSearch(e) }} eventKey="Music" href="#action/3.3">Music</NavDropdown.Item>
+                                <NavDropdown.Item onSelect={(e, eventKey) => { handleActionSearch(e) }} eventKey="Romance" href="#action/3.3">Romance</NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item href="#action/3.4">
 
+                                </NavDropdown.Item>
+                            </NavDropdown>
+                            <InputGroup className="mb-3">
+                                <InputGroup.Prepend>
+                                    <InputGroup.Text id="basic-addon1">Rating</InputGroup.Text>
+                                </InputGroup.Prepend>
+                                <FormControl
+                                    placeholder="Rating"
+                                    aria-label="Rating"
+                                    aria-describedby="basic-addon1"
+                                    onChangeCapture={(e) => {
+                                        //TODO: implement handleRatingSearch(e)
+                                    }}
+                                />
+                            </InputGroup>
+                            <Button 
+                                className="mb-2" 
+                                variant="primary" 
+                                type="button" 
+                                size="sm" 
+                                bsPrefix="btn"
+                                onClick={handleButtonLogOut}>Log out</Button>
+                        </Nav>
+                        <Form inline>
+                            <FormControl
+                                onKeyPress={
+                                    (event) => {
+                                        if (event.key === "Enter") {
+                                            setSearchTerm(event.target.value)
+                                            handleSearch()
+                                            event.preventDefault();
+                                        }
+
+                                    }
+                                }
+                                onChange={
+                                    (event) => {
+                                        setSearchTerm(event.target.value)
+                                    }
+                                }
+
+                                type="text" placeholder="Search" className="mr-sm-2" />
+                            <Button variant="outline-success" onClick={handleSearch}>Search</Button>
+                        </Form>
+                    </Navbar.Collapse>
+                </Navbar>
             </div>
-
+            {
+                loading || error || !data ? <Spinner animation="border" role="status"><span className="sr-only">Loading...</span></Spinner> : <ShowGrid shows={data}></ShowGrid>
+            }
         </Fragment>
 
-
-    );
+    )
 }
-
-
-export default AppNavBar;
+export default AppNarBar;

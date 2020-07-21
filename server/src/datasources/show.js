@@ -120,7 +120,6 @@ class ShowAPI extends RESTDataSource {
         }
     }
     
-
     //implement show reducer
     showReducer(show){
         return {

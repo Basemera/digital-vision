@@ -42,7 +42,12 @@ function MainShowContainer() {
             setVariables({ genre: e })
             setQuery(query)
         // }
+    }
 
+    function handleButtonLogOut() {
+        console.log("I have clicked logout");
+        localStorage.removeItem('token');
+        window.location.reload()
     }
 
     let [variables, setVariables] = useState()
@@ -86,6 +91,13 @@ function MainShowContainer() {
                                     }}
                                 />
                             </InputGroup>
+                            <Button 
+                                className="mb-2" 
+                                variant="primary" 
+                                type="button" 
+                                size="sm" 
+                                bsPrefix="btn"
+                                onClick={handleButtonLogOut}>Log out</Button>
                         </Nav>
                         <Form inline>
                             <FormControl

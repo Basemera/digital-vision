@@ -41,6 +41,9 @@ module.exports.createStore = () => {
         },
         user: {
             type: SQL.INTEGER
+        },
+        url: {
+            type: SQL.STRING
         }
     },
     );
@@ -56,7 +59,7 @@ module.exports.createStore = () => {
         comment: SQL.TEXT
     })
 
-    db.sync({ force: true }).then(() => { db.close });
+    db.sync({ force: false }).then(() => { db.close });
 
     return { db, users, shows, comments, };
 }

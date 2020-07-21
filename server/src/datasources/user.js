@@ -1,4 +1,6 @@
 const { DataSource } = require('apollo-datasource');
+const { RESTDataSource } = require('apollo-datasource-rest');
+
 const bcrypt = require('bcryptjs');
 
 hashPassword = function ({ password }) {
@@ -9,10 +11,11 @@ validatePassword = function (unHashedPassword, userHashedPassword) {
   return bcrypt.compareSync(unHashedPassword, userHashedPassword);
 }
 
-class UserAPI extends DataSource {
+class UserAPI extends RESTDataSource {
   constructor({ store }) {
     super();
     this.store = store;
+    this.baseURL = 'https://api.tvmaze.com/'
   }
 
   /**
@@ -21,9 +24,9 @@ class UserAPI extends DataSource {
    * like caches and context. We'll assign this.context to the request context
    * here, so we can know about the user making requests
    */
-  initialize(config) {
-    this.context = config.context;
-  }
+  // initialize(config) {
+  //   this.context = config.context;
+  // }
 
 
   async validateUser({ username, password }) {
@@ -73,7 +76,7 @@ class UserAPI extends DataSource {
   async addShow({ showId }) {
     const userId = this.context.user.id;
     const res = await this.store.shows.findOrCreate({
-      where: { user: userId, showId: showId.showId, name: showId.name },
+      where: { user: userId, showId: showId.showId, name: showId.name, url: showId.url },
     });
     return res && res.length ? res[0].get() : false;
   }
@@ -165,6 +168,56 @@ class UserAPI extends DataSource {
     });
     return res && res.length ? res[0].get() : false;
   }
+
+
+  async getUserScheduledShows() {
+    const userId = this.context.user.id;
+    if (!userId) return;
+    const shows = await this.store.shows.findAll({
+      where: {
+        user: userId
+      }
+    });
+    return Array.isArray(shows)
+      ? shows.map(show=> this.getShowDetails(show))
+      : [];
+}
+
+async getShowDetails(show) {
+  console.log(show.dataValues.url);
+  const url = show.dataValues.url;
+  const response = await this.get(url);
+  let res = [];
+  res =  response ? this.showReducer(response) : [];
+  res.showId = show.id;
+  return res ? res : [];
+}
+
+//implement show reducer
+showReducer(show){
+  return {
+      id: show.id || 0,
+      showId: show.showId,
+      url: show.url,
+      name: show.name,
+      type: show.type,
+      genre: show.genres,
+      status: show.status,
+      dateOfPremier: show.premiered,
+      rating: {
+          average: {
+              average: show.rating.average
+          }
+      },
+      // show.rating,
+      images: {
+          medium: show.image && show.image.medium ? show.image.medium : null,
+          original: show.image && show.image.original ? show.image.original : null
+      } || null,
+      // show.image,
+      summary: show.summary,
+  }
+}
 
   //comment reducer
   commentReducer(comment, user) {

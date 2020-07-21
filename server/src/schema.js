@@ -25,6 +25,7 @@ const typeDefs = gql`
         id:ID!
         name: String
         url: String
+        user: Int
         # dateOfPremier: String
         # schedule: Schedule
     }
@@ -92,6 +93,21 @@ const typeDefs = gql`
     type Query{
         shows (name: String, genre: String, rating: Float, premiere: String, status: String): [Show]
         show (id:Int): Show
+        myShows: [MyShows]
+    }
+
+
+    type MyShows {
+        name: String
+        url: String
+        genre: [String]
+        rating: Rating
+        dateOfPremier: String
+        status: String
+        images:Image
+        site: String
+        summary: String
+        showId: Int
     }
 
     type LoginObject {
@@ -102,6 +118,7 @@ const typeDefs = gql`
     input ShowInputIds {
         name: String
         showId: Int
+        url: String
     }
 
     input ShowUpdateInputIds {
