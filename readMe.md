@@ -34,16 +34,16 @@ npm run start-client
 ## My favourite shows
 ![Alt text](images/myfavs.png?raw=true "My favourite shows")
 ## Get shows details
-![Alt text](images/show_detail.png?raw=true "Show details") 
+![Alt text](images/showdetailspage.png?raw=true "Get a single show's details") 
 ## Add show to watch schedule
 ![Alt text](images/addshowtoschedule.png?raw=true "Add show to schedule")
 ## Add comment to show
 ![Alt text](images/addshowtoschedule.png?raw=true "Add coment to show")
 
 ### To Do
-- Add view my shows page
-- Implement view show details page
+- Styling for the view show details page
 - Implement add show to schedule, favourite ahow and add comments in client
+- Add details of epidoses for a show
 - Add registration page
 - Host the application
 - Add tests

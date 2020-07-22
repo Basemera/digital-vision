@@ -22,9 +22,14 @@ function ShowDetails(props) {
                         <Card.Img variant="top" />
                         <Card.Body>
                             <Card.Text>
-                                <Card.Img variant="top" src={props.show.images.medium} style={{ width: '20rem' }} />
+                                <Card.Img variant="top" src={props.show.images.medium} style={{ width: '30rem' }} />
                             </Card.Text>
-
+                        </Card.Body>
+                    </Card>
+                </Col>
+                <Col md="auto">
+                    <Card style={{ width: '50rem' }}>
+                        <Card.Body>
                             <Card.Text>
                                 <h3>Rating</h3>
                                 <p>
