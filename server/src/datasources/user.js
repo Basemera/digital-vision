@@ -111,26 +111,41 @@ class UserAPI extends RESTDataSource {
     const userId = this.context.user.id;
     if (!userId) return;
     let results = [];
+    console.log(showIds)
+
     for (const showId of showIds.showIds) {
+      console.log(showId)
       const res = await this.favouriteWatchedShow({ showId });
-      if (res) results.push(res);
+      // let s = this.showReducer(res)
+      console.log(res);
+      let s = {
+        id: res.id,
+        name: res.name,
+        url: res.url,
+        user: res.user,
+        fav: res.favourite
+      };
+      if (res) results.push(s);
+
     }
+    console.log(results)
     return results;
-  }
+}
 
   async favouriteWatchedShow({ showId }) {
     const userId = this.context.user.id;
     const res = await this.store.shows.findOne({
       where: { user: userId, showId: showId.showId }
     });
-    if (res && res.watched) {
-      res.favourited = true;
+    if (res && res.dataValues.watched) {
+      res.dataValues.favourite = true;
       res.save();
       return res;
     } else {
       return false;
       // return `show ${ showId.showId } not added to user watch list`
     }
+
   }
 
   async findShow({ showId }) {
@@ -183,6 +198,21 @@ class UserAPI extends RESTDataSource {
       : [];
 }
 
+async getUserFavouriteShows() {
+  const userId = this.context.user.id;
+  if (!userId) return;
+  const shows = await this.store.shows.findAll({
+    where: {
+      user: userId,
+      favourite: true
+    }
+  });
+  console.log(shows);
+  return Array.isArray(shows)
+    ? shows.map(show=> this.getShowDetails(show))
+    : [];
+}
+
 async getShowDetails(show) {
   console.log(show.dataValues.url);
   const url = show.dataValues.url;
@@ -197,7 +227,7 @@ async getShowDetails(show) {
 showReducer(show){
   return {
       id: show.id || 0,
-      showId: show.showId,
+      showId: show.showId || 0,
       url: show.url,
       name: show.name,
       type: show.type,
@@ -206,7 +236,7 @@ showReducer(show){
       dateOfPremier: show.premiered,
       rating: {
           average: {
-              average: show.rating.average
+              average: show.rating ? show.rating.average : null
           }
       },
       // show.rating,
@@ -215,7 +245,7 @@ showReducer(show){
           original: show.image && show.image.original ? show.image.original : null
       } || null,
       // show.image,
-      summary: show.summary,
+      summary: show.summary || null,
   }
 }
 

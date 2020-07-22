@@ -8,6 +8,7 @@ import {
 import './App.css';
 import LoginForm from './containers/loginForm'
 import MyShows from './containers/myShows';
+import MyFavShows from './containers/myFavShows';
 import MainShowContainer from './containers/MainShowContainer';
 import IS_LOGGED_IN from './queries/isLoggedIn';
 import { useQuery } from 'react-apollo'
@@ -27,6 +28,11 @@ function App() {
         <Route path="/shows">
           {
             data.isLoggedIn ? <MyShows></MyShows> : <LoginForm></LoginForm>
+          }   
+        </Route>
+        <Route path="/favourites">
+          {
+            data.isLoggedIn ? <MyFavShows></MyFavShows> : <LoginForm></LoginForm>
           }   
         </Route>
         <Route path="/login">

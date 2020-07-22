@@ -24,7 +24,7 @@ function AppNarBar() {
     const location = useLocation();
     const history = useHistory()
 
-
+console.log(location.pathname)
     function handleSearch() {
         query = SEARCH_BY_NAME
         setVariables({ name: searchTerm })
@@ -59,7 +59,15 @@ function AppNarBar() {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mr-auto">
                             <Nav.Link href="/">Shows</Nav.Link>
-                            <Nav.Link href="/favourites">My favourites</Nav.Link>
+                                {
+                                    location.pathname == '/shows' ? 
+                                    <Nav.Link href="/favourites"> My favourites</Nav.Link>
+                                    :
+                                    <Nav.Link href="/shows"> My shows</Nav.Link>
+
+
+                                        
+                                }
                             <NavDropdown title="Genres" id="basic-nav-dropdown">
                                 <NavDropdown.Item onSelect={(e, eventKey) => { handleActionSearch(e) }} eventKey="Action" href="#action/3.3">Action</NavDropdown.Item>
                                 <NavDropdown.Item onSelect={(e, eventKey) => { handleActionSearch(e) }} eventKey="Drama" href="#action/3.1">Drama</NavDropdown.Item>

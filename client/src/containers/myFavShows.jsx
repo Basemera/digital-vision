@@ -7,14 +7,14 @@ import { Spinner, CardDeck } from 'react-bootstrap';
 import AppNavBar from '../components/AppNavBar';
 import IS_LOGGED_IN from '../queries/isLoggedIn';
 import { useQuery } from 'react-apollo';
-import GET_USER_SCHEDULED_SHOWS from '../queries/getUserScheduledShows';
+import GET_USER_FAVOURITE_SHOWS from '../queries/getUserFavouriteShows';
 import MovieCard from '../components/MovieCard'
 
 
-function MyShows({ children, ...rest }) {
-    let { query, setQuery } = useState(GET_USER_SCHEDULED_SHOWS);
+function MyFavShows({ children, ...rest }) {
+    let { query, setQuery } = useState(GET_USER_FAVOURITE_SHOWS);
     let {favQuery, setFavQuery } = useState();
-    let { data, loading, error } = useQuery(GET_USER_SCHEDULED_SHOWS);
+    let { data, loading, error } = useQuery(GET_USER_FAVOURITE_SHOWS);
     // let { data, loading, error } = useQuery(query, { variables });
 
     return (
@@ -23,12 +23,13 @@ function MyShows({ children, ...rest }) {
             <CardDeck>
                 <Fragment>
                     {
-                        data && data.myShows
-                            ? data.myShows.map(show => {
+                        data && data.myFavs
+                            ? data.myFavs.map(show => {
                                 return <MovieCard key={show.id} show={show} />
                             })
                             :
-                            loading || !data ? <Spinner animation="border" role="status"><span className="sr-only">Loading...</span></Spinner>
+                            loading ? <Spinner animation="border" role="status"><span className="sr-only">Loading...</span></Spinner>
+                            : error ? <p>Something went wrong</p>
                             : <p>No results to show</p>
                     }
                 </Fragment>
@@ -41,4 +42,4 @@ function MyShows({ children, ...rest }) {
     )
 }
 
-export default MyShows;
+export default MyFavShows;

@@ -94,6 +94,8 @@ const typeDefs = gql`
         shows (name: String, genre: String, rating: Float, premiere: String, status: String): [Show]
         show (id:Int): Show
         myShows: [MyShows]
+        myFavs: [MyShows]
+
     }
 
 
