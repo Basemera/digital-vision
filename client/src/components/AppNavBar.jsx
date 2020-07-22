@@ -23,11 +23,6 @@ import {
 function AppNarBar() {
     const location = useLocation();
     const history = useHistory()
-    function setPathName({ ...location }) {
-        let { pathname } = location;
-        pathname = "/show"
-        history.push(pathname)
-    }
 
 
     function handleSearch() {
@@ -64,7 +59,7 @@ function AppNarBar() {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mr-auto">
                             <Nav.Link href="/">Shows</Nav.Link>
-                            <Nav.Link href="/shows">My Shows</Nav.Link>
+                            <Nav.Link href="/favourites">My favourites</Nav.Link>
                             <NavDropdown title="Genres" id="basic-nav-dropdown">
                                 <NavDropdown.Item onSelect={(e, eventKey) => { handleActionSearch(e) }} eventKey="Action" href="#action/3.3">Action</NavDropdown.Item>
                                 <NavDropdown.Item onSelect={(e, eventKey) => { handleActionSearch(e) }} eventKey="Drama" href="#action/3.1">Drama</NavDropdown.Item>
@@ -123,9 +118,7 @@ function AppNarBar() {
                     </Navbar.Collapse>
                 </Navbar>
             </div>
-            {
-                loading || error || !data ? <Spinner animation="border" role="status"><span className="sr-only">Loading...</span></Spinner> : <ShowGrid shows={data}></ShowGrid>
-            }
+            
         </Fragment>
 
     )

@@ -2,6 +2,15 @@ import gql from "graphql-tag";
 
 const GET_USER_SCHEDULED_SHOWS = gql`
     query {
-        shows()
+        myShows {
+            name
+            images{
+                medium
+            }
+            showId
+            url
+        }
     }
 `
+
+export default GET_USER_SCHEDULED_SHOWS;
