@@ -111,13 +111,10 @@ class UserAPI extends RESTDataSource {
     const userId = this.context.user.id;
     if (!userId) return;
     let results = [];
-    console.log(showIds)
 
     for (const showId of showIds.showIds) {
-      console.log(showId)
       const res = await this.favouriteWatchedShow({ showId });
       // let s = this.showReducer(res)
-      console.log(res);
       let s = {
         id: res.id,
         name: res.name,
@@ -128,7 +125,6 @@ class UserAPI extends RESTDataSource {
       if (res) results.push(s);
 
     }
-    console.log(results)
     return results;
 }
 
@@ -207,14 +203,12 @@ async getUserFavouriteShows() {
       favourite: true
     }
   });
-  console.log(shows);
   return Array.isArray(shows)
     ? shows.map(show=> this.getShowDetails(show))
     : [];
 }
 
 async getShowDetails(show) {
-  console.log(show.dataValues.url);
   const url = show.dataValues.url;
   const response = await this.get(url);
   let res = [];

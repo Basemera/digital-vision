@@ -24,7 +24,6 @@ function AppNarBar() {
     const location = useLocation();
     const history = useHistory()
 
-console.log(location.pathname)
     function handleSearch() {
         query = SEARCH_BY_NAME
         setVariables({ name: searchTerm })
@@ -33,14 +32,13 @@ console.log(location.pathname)
 
     function handleActionSearch(e) {
         // if (e === "Action") {
-            query = SEARCH_BY_GENRE
-            setVariables({ genre: e })
-            setQuery(query)
+        query = SEARCH_BY_GENRE
+        setVariables({ genre: e })
+        setQuery(query)
         // }
     }
 
     function handleButtonLogOut() {
-        console.log("I have clicked logout");
         localStorage.removeItem('token');
         window.location.reload()
     }
@@ -59,15 +57,13 @@ console.log(location.pathname)
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mr-auto">
                             <Nav.Link href="/">Shows</Nav.Link>
-                                {
-                                    location.pathname == '/shows' ? 
+                            {
+                                location.pathname == '/shows' ?
                                     <Nav.Link href="/favourites"> My favourites</Nav.Link>
                                     :
                                     <Nav.Link href="/shows"> My shows</Nav.Link>
 
-
-                                        
-                                }
+                            }
                             <NavDropdown title="Genres" id="basic-nav-dropdown">
                                 <NavDropdown.Item onSelect={(e, eventKey) => { handleActionSearch(e) }} eventKey="Action" href="#action/3.3">Action</NavDropdown.Item>
                                 <NavDropdown.Item onSelect={(e, eventKey) => { handleActionSearch(e) }} eventKey="Drama" href="#action/3.1">Drama</NavDropdown.Item>
@@ -94,11 +90,11 @@ console.log(location.pathname)
                                     }}
                                 />
                             </InputGroup>
-                            <Button 
-                                className="mb-2" 
-                                variant="primary" 
-                                type="button" 
-                                size="sm" 
+                            <Button
+                                className="mb-2"
+                                variant="primary"
+                                type="button"
+                                size="sm"
                                 bsPrefix="btn"
                                 onClick={handleButtonLogOut}>Log out</Button>
                         </Nav>
@@ -126,7 +122,7 @@ console.log(location.pathname)
                     </Navbar.Collapse>
                 </Navbar>
             </div>
-            
+
         </Fragment>
 
     )

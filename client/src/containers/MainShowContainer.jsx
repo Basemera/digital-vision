@@ -45,7 +45,6 @@ function MainShowContainer() {
     }
 
     function handleButtonLogOut() {
-        console.log("I have clicked logout");
         localStorage.removeItem('token');
         window.location.reload()
     }

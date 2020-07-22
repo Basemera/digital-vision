@@ -12,10 +12,7 @@ import MovieCard from '../components/MovieCard'
 
 
 function MyShows({ children, ...rest }) {
-    let { query, setQuery } = useState(GET_USER_SCHEDULED_SHOWS);
-    let {favQuery, setFavQuery } = useState();
     let { data, loading, error } = useQuery(GET_USER_SCHEDULED_SHOWS);
-    // let { data, loading, error } = useQuery(query, { variables });
 
     return (
         <div>
