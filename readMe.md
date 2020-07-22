@@ -29,8 +29,12 @@ npm run start-client
 ![Alt text](images/shows.png?raw=true "Shows Page")
 ## Search functionality
 ![Alt text](images/show_by_genre.png?raw=true "Search functionality")
+## My shows
+![Alt text](images/Myshows.png?raw=true "My shows")
+## My favourite shows
+![Alt text](images/myfavs.png?raw=true "My favourite shows")
 ## Get shows details
-![Alt text](images/show_detail.png?raw=true "Show details")  addshowtoschedule
+![Alt text](images/show_detail.png?raw=true "Show details") 
 ## Add show to watch schedule
 ![Alt text](images/addshowtoschedule.png?raw=true "Add show to schedule")
 ## Add comment to show
