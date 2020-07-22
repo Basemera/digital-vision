@@ -12,6 +12,7 @@ import MyFavShows from './containers/myFavShows';
 import MainShowContainer from './containers/MainShowContainer';
 import IS_LOGGED_IN from './queries/isLoggedIn';
 import { useQuery } from 'react-apollo'
+import ShowDetailsPage from './containers/ShowDetailsPage';
 
 // function IsLoggedIn() {
 //   const { data } = useQuery(IS_LOGGED_IN);
@@ -35,6 +36,12 @@ function App() {
             data.isLoggedIn ? <MyFavShows></MyFavShows> : <LoginForm></LoginForm>
           }   
         </Route>
+
+        <Route path="/show/:id">
+          {
+            data.isLoggedIn ? <ShowDetailsPage></ShowDetailsPage> : <LoginForm></LoginForm>
+          }
+        </Route>
         <Route path="/login">
           {
             data.isLoggedIn ? <MainShowContainer></MainShowContainer> : <LoginForm></LoginForm>
@@ -45,6 +52,7 @@ function App() {
             data.isLoggedIn ? <MainShowContainer></MainShowContainer> : <LoginForm></LoginForm>
           }
         </Route>
+
       </Switch>
     </Router>
   );

@@ -110,6 +110,7 @@ const typeDefs = gql`
         site: String
         summary: String
         showId: Int
+        id: Int
     }
 
     type LoginObject {

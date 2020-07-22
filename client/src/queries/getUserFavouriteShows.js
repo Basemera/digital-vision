@@ -9,6 +9,7 @@ const GET_USER_FAVOURITE_SHOWS = gql`
             }
             showId
             url
+            id
         }
     }
 `

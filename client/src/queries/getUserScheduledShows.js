@@ -9,6 +9,7 @@ const GET_USER_SCHEDULED_SHOWS = gql`
             }
             showId
             url
+            id
         }
     }
 `

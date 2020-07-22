@@ -3,8 +3,15 @@ import {
     Card,
     Button
 } from 'react-bootstrap';
+import {
+    useLocation,
+    useHistory
+} from 'react-router-dom'
 
 function MovieCard(props) {
+    const location = useLocation();
+    const history = useHistory()
+
     return (
         <div style={{ marginBottom:"50px"}}>
             <Card style={{ width: '18rem' }}>
@@ -14,7 +21,7 @@ function MovieCard(props) {
                     <Card.Text>
                         {props.show.summary}
                     </Card.Text>
-                    <Button variant="primary">View more</Button>
+                    <Button variant="primary" href={`/show/${props.show.id}`}>View more</Button>
                 </Card.Body>
             </Card>
         </div>
