@@ -16,7 +16,7 @@
     "apollo-client": "^2.6.10",
     "apollo-datasource-rest": "^0.9.3",
     "apollo-link-http": "^1.5.17",
-    "apollo-server": "^2.15.1",
+    "apollo-server": "^2.25.3",
     "bcryptjs": "^2.4.3",
     "bootstrap": "^4.5.0",
     "create-react-app": "^3.4.1",
